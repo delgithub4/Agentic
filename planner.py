@@ -2,9 +2,13 @@ class Planner:
 
     def create_plan(self, task):
 
-        return [
-            "Understand the task",
-            "Break task into steps",
-            "Execute each step",
-            "Return the result"
-        ]
+        return {
+            "goal": task,
+            "steps": [
+                "Understand the request",
+                "Select the appropriate agent/tool",
+                "Execute the task",
+                "Review the result",
+                "Return the response"
+            ]
+        }
