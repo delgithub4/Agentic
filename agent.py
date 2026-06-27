@@ -1,3 +1,4 @@
+from tools import ToolBox
 from planner import Planner
 from memory import Memory
 
@@ -10,6 +11,7 @@ class Agent:
 
     def __init__(self):
 
+        self.tools = ToolBox()
         self.planner = Planner()
         self.memory = Memory()
 
@@ -19,6 +21,22 @@ class Agent:
 
     def run(self, task):
 
+        task_lower = task.lower()
+
+    if task_lower.startswith("calculate"):
+
+        expression = task.replace("calculate", "").strip()
+
+        return self.tools.calculator(expression)
+
+    if "time" in task_lower:
+
+        return self.tools.current_time()
+
+    if "date" in task_lower:
+
+        return self.tools.current_date()
+        
         self.memory.save(task)
 
         plan = self.planner.create_plan(task)
