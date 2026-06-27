@@ -1,3 +1,4 @@
+from router import Router
 from tools import ToolBox
 from planner import Planner
 from memory import Memory
@@ -11,6 +12,7 @@ class Agent:
 
     def __init__(self):
 
+        self.router = Router()
         self.tools = ToolBox()
         self.planner = Planner()
         self.memory = Memory()
@@ -21,34 +23,34 @@ class Agent:
 
     def run(self, task):
 
-        task_lower = task.lower()
+    decision = self.router.decide(task)
 
-    if task_lower.startswith("calculate"):
+    if decision == "calculator":
 
         expression = task.replace("calculate", "").strip()
 
         return self.tools.calculator(expression)
 
-    if "time" in task_lower:
+    if decision == "time":
 
         return self.tools.current_time()
 
-    if "date" in task_lower:
+    if decision == "date":
 
         return self.tools.current_date()
-        
-        self.memory.save(task)
 
-        plan = self.planner.create_plan(task)
+    self.memory.save(task)
 
-        research = self.researcher.research(task)
+    plan = self.planner.create_plan(task)
 
-        draft = self.writer.write(research)
+    research = self.researcher.research(task)
 
-        final = self.reviewer.review(draft)
+    draft = self.writer.write(research)
 
-        return {
-            "task": task,
-            "plan": plan,
-            "response": final
-        }
+    final = self.reviewer.review(draft)
+
+    return {
+        "task": task,
+        "plan": plan,
+        "response": final
+    }
