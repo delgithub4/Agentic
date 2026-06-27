@@ -1,3 +1,4 @@
+from manager import AgentManager
 from router import Router
 from tools import ToolBox
 from planner import Planner
@@ -17,9 +18,7 @@ class Agent:
         self.planner = Planner()
         self.memory = Memory()
 
-        self.researcher = ResearchAgent()
-        self.writer = WriterAgent()
-        self.reviewer = ReviewerAgent()
+        self.manager = AgentManager()
 
     def run(self, task):
 
@@ -43,11 +42,17 @@ class Agent:
 
     plan = self.planner.create_plan(task)
 
-    research = self.researcher.research(task)
+    researcher = self.manager.get("research")
 
-    draft = self.writer.write(research)
-
-    final = self.reviewer.review(draft)
+    writer = self.manager.get("writer")
+    
+    reviewer = self.manager.get("reviewer")
+    
+    research = researcher.research(task)
+    
+    draft = writer.write(research)
+    
+    final = reviewer.review(draft)
 
     return {
         "task": task,
