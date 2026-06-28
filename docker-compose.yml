@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+
+  agentic:
+
+    build: .
+
+    container_name: agentic-service
+
+    restart: unless-stopped
+
+    ports:
+      - "8000:8000"
+
+    env_file:
+      - .env
+
+    volumes:
+      - .:/app
